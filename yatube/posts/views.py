@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from yatube.settings import PER_PAGE
 from .forms import CommentForm, PostForm
-from .models import Comment, Group, Post, User, Follow
+from .models import Group, Post, User, Follow
 from .utils import page
 from django.views.decorators.cache import cache_page
 
@@ -103,6 +103,7 @@ def add_comment(request, post_id):
         comment.save()
     return redirect('posts:post_detail', post_id=post_id)
 
+
 @login_required
 def follow_index(request):
     template = 'posts/follow.html'
@@ -114,6 +115,7 @@ def follow_index(request):
         'page_obj': page_obj,
     }
     return render(request, template, context)
+
 
 @login_required
 def profile_follow(request, username):
