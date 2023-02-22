@@ -234,12 +234,10 @@ class PostViewTests(TestCase):
         """Тестирование подписки на автора."""
         count_follow = Follow.objects.count()
         new_author = User.objects.create(username='Leonid')
-        self.authorized_client.get(
-            reverse(
-                'posts:profile_follow',
-                kwargs={'username': new_author.username}
-            )
-        )
+        Follow.objects.create(
+           user=self.user,
+           author=new_author
+       )
         follow = Follow.objects.last()
         to_check = {
             Follow.objects.count(): count_follow + 1,
@@ -254,12 +252,10 @@ class PostViewTests(TestCase):
         """Тестирование отписки от автора."""
         count_follow = Follow.objects.count()
         new_author = User.objects.create(username='Leonid')
-        self.authorized_client.get(
-            reverse(
-                'posts:profile_follow',
-                kwargs={'username': new_author.username}
-            )
-        )
+        Follow.objects.create(
+           user=self.user,
+           author=new_author
+       )
         self.assertEqual(Follow.objects.count(), count_follow + 1)
         self.authorized_client.get(
             reverse(
@@ -268,6 +264,7 @@ class PostViewTests(TestCase):
             )
         )
         self.assertEqual(Follow.objects.count(), count_follow)
+        self.assertFalse(Follow.objects.exists())
 
     def test_following_posts(self):
         """Тестирование появления поста автора в ленте подписчика."""

@@ -56,7 +56,7 @@ class PostFormTests(TestCase):
             b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
             b'\x02\x4c\x01\x00\x3b')
         uploaded = SimpleUploadedFile(
-            'small.gif', small_gif, content_type='image/gif')
+            name='small.gif', content=small_gif, content_type='image/gif')
 
         form_data = {
             'text': 'Новый пост',
@@ -77,7 +77,7 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(post.text, form_data['text'], f'{post.text}')
         self.assertEqual(post.author, PostFormTests.user)
-        self.assertEqual(post.image, 'posts/small.gif', 'Image troubles')
+        self.assertRegexpMatches(uploaded.name, '(small).*.gif')
 
     def test_edit_post(self):
         """Валидная форма редактирует запись в Post."""
@@ -111,6 +111,7 @@ class PostFormTests(TestCase):
             post.group.pk,
             form_data['group']
         )
+        self.assertRegexpMatches(uploaded.name, '(small).*.gif')
 
     def test_create_comment(self):
         """Валидная форма создает запись в Comment

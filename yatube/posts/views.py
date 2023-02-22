@@ -35,9 +35,13 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
     post_list = author.posts.all()
     page_obj = page(request, post_list, PER_PAGE)
+    following = False
+    if request.user.is_authenticated:
+        following = request.user.follower.filter(author=author).exists()
     context = {
         'author': author,
         'page_obj': page_obj,
+        'following': following
     }
     return render(request, 'posts/profile.html', context)
 
