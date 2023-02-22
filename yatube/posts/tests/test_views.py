@@ -235,9 +235,9 @@ class PostViewTests(TestCase):
         count_follow = Follow.objects.count()
         new_author = User.objects.create(username='Leonid')
         Follow.objects.create(
-           user=self.user,
-           author=new_author
-       )
+            user=self.user,
+            author=new_author
+        )
         follow = Follow.objects.last()
         to_check = {
             Follow.objects.count(): count_follow + 1,
@@ -253,9 +253,9 @@ class PostViewTests(TestCase):
         count_follow = Follow.objects.count()
         new_author = User.objects.create(username='Leonid')
         Follow.objects.create(
-           user=self.user,
-           author=new_author
-       )
+            user=self.user,
+            author=new_author
+        )
         self.assertEqual(Follow.objects.count(), count_follow + 1)
         self.authorized_client.get(
             reverse(
