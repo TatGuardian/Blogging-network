@@ -264,7 +264,8 @@ class PostViewTests(TestCase):
             )
         )
         self.assertEqual(Follow.objects.count(), count_follow)
-        self.assertFalse(Follow.objects.exists())
+        self.assertFalse(Follow.objects.filter(
+            user=self.user, author=new_author).exists())
 
     def test_following_posts(self):
         """Тестирование появления поста автора в ленте подписчика."""
